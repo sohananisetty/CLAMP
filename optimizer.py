@@ -11,6 +11,7 @@ def separate_weight_decayable_params(params):
 
 def get_optimizer(
     named_params,
+    freeze_parameters,
     lr=1e-4,
     wd=1e-2,
     betas=(0.9, 0.99),
@@ -32,18 +33,6 @@ def get_optimizer(
     named_parameters = list(named_params)
 
     # freeze text encoder
-    freeze_parameters = [
-        p
-        for n, p in named_parameters
-        if "text_model" in n
-        or "text_projection" in n
-        or "audio_model" in n
-        or "audio_projection" in n
-        or "motion_model" in n
-        or "motion_model.quantizer.codebook.weight" in n
-        or "logit_scale_a" in n
-        or "logit_scale_t" in n
-    ]
 
     # if args.freeze_text:
     print("Freeze Text and Audio!!!!")

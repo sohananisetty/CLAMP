@@ -72,6 +72,23 @@ class ClampTrainer(nn.Module):
             "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp"
         )
 
+        freeze_parameters = [
+            p
+            for n, p in self.clamp_model.named_parameters()
+            if "text_model" in n
+            or "text_projection" in n
+            or "audio_model" in n
+            or "audio_projection" in n
+            or "motion_model" in n
+            or "motion_model.quantizer.codebook.weight" in n
+            or "logit_scale_a" in n
+            or "logit_scale_t" in n
+        ]
+        print("Freeze Text and Audio!!!!")
+
+        for k in freeze_parameters:
+            k.requires_grad = False
+
         clamp_feature_extractor = ClampFeatureExtractor.from_pretrained(
             "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp/"
         )
@@ -82,16 +99,17 @@ class ClampTrainer(nn.Module):
 
         self.register_buffer("steps", torch.Tensor([0]))
 
-        total = sum(p.numel() for p in self.clamp_model.parameters() if p.requires_grad)
-        print("Total training params: %.2fM" % (total / 1e6))
-
         self.grad_accum_every = self.training_args.gradient_accumulation_steps
 
         self.optim = get_optimizer(
             self.clamp_model.named_parameters(),
+            freeze_parameters,
             lr=self.training_args.learning_rate,
             wd=self.training_args.weight_decay,
         )
+
+        total = sum(p.numel() for p in self.clamp_model.parameters() if p.requires_grad)
+        print("Total training params: %.2fM" % (total / 1e6))
 
         self.lr_scheduler = get_scheduler(
             name=self.training_args.lr_scheduler_type,
@@ -100,15 +118,13 @@ class ClampTrainer(nn.Module):
             num_training_steps=self.num_train_steps,
         )
 
-        self.max_grad_norm = self.training_args.max_grad_norm
-
         train_ds, sampler_train, weights_train = load_dataset(
-            data_root=self.dataset_args.dataset_root,
+            dataset_root=self.dataset_args.dataset_root,
             split="train",
-            weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1],
+            weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
         )
         test_ds, _, _ = load_dataset(
-            data_root=self.dataset_args.dataset_root,
+            dataset_root=self.dataset_args.dataset_root,
             split="test",
         )
 
@@ -312,7 +328,7 @@ class ClampTrainer(nn.Module):
 
 
 if __name__ == "__main__":
-    nme = "clamp"
+    nme = "clamp_enc"
     path = f"/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/{nme}/{nme}.yaml"
     cfg = get_cfg_defaults()
     print("loading config from:", path)
