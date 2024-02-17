@@ -30,6 +30,8 @@ cfg.train.evaluate_every = 5000
 cfg.train.eval_bs = 20
 cfg.train.train_bs = 24
 cfg.train.gradient_accumulation_steps = 4
+cfg.train.motion_max_length_s = 10
+cfg.train.motion_min_length_s = 3
 ## optimization
 cfg.train.learning_rate = 2e-4
 cfg.train.weight_decay = 0.0

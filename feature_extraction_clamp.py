@@ -149,6 +149,7 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
             norm="slaney",
             mel_scale="slaney",
         )
+        self.fps = fps
         self.motion_type = motion_type
         self.mean = np.array(mean)
         self.std = np.array(std)

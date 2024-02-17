@@ -65,51 +65,30 @@ class ClampTrainer(nn.Module):
         self.output_dir = Path(self.args.output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        self.clamp_config = ClampConfig.from_pretrained(
-            "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp"
-        )
-        self.clamp_model = ClampModel.from_pretrained(
-            "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp"
-        )
-
-        freeze_parameters = [
-            p
-            for n, p in self.clamp_model.named_parameters()
-            if "text_model" in n
-            or "text_projection" in n
-            or "audio_model" in n
-            or "audio_projection" in n
-            or "motion_model" in n
-            or "motion_model.quantizer.codebook.weight" in n
-            or "logit_scale_a" in n
-            or "logit_scale_t" in n
+        freeze_modules = [
+            "text_model",
+            "text_projection",
+            "audio_model",
+            "audio_projection",
+            "motion_model",
+            "motion_model.quantizer.codebook.weight",
+            "logit_scale_a",
+            "logit_scale_t",
         ]
-        print("Freeze Text and Audio!!!!")
 
-        for k in freeze_parameters:
-            k.requires_grad = False
-
-        clamp_feature_extractor = ClampFeatureExtractor.from_pretrained(
-            "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp/"
+        self.initialize_models_from_pretrained(
+            "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp", freeze_modules
         )
-        tokenizer = RobertaTokenizer.from_pretrained(
-            "/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp"
-        )
-        self.clamp_processor = ClampProcessor(clamp_feature_extractor, tokenizer)
-
         self.register_buffer("steps", torch.Tensor([0]))
 
         self.grad_accum_every = self.training_args.gradient_accumulation_steps
 
         self.optim = get_optimizer(
             self.clamp_model.named_parameters(),
-            freeze_parameters,
+            freeze_modules=freeze_modules,
             lr=self.training_args.learning_rate,
             wd=self.training_args.weight_decay,
         )
-
-        total = sum(p.numel() for p in self.clamp_model.parameters() if p.requires_grad)
-        print("Total training params: %.2fM" % (total / 1e6))
 
         self.lr_scheduler = get_scheduler(
             name=self.training_args.lr_scheduler_type,
@@ -121,11 +100,15 @@ class ClampTrainer(nn.Module):
         train_ds, sampler_train, weights_train = load_dataset(
             dataset_root=self.dataset_args.dataset_root,
             split="train",
-            weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
+            # weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
+            motion_min_length_s=self.training_args.motion_min_length_s,
+            motion_max_length_s=self.training_args.motion_max_length_s,
         )
         test_ds, _, _ = load_dataset(
             dataset_root=self.dataset_args.dataset_root,
             split="test",
+            motion_min_length_s=self.training_args.motion_min_length_s,
+            motion_max_length_s=self.training_args.motion_max_length_s,
         )
 
         self.print(
@@ -160,6 +143,29 @@ class ClampTrainer(nn.Module):
         # if self.is_main:
         wandb.login()
         wandb.init(project=self.model_name)
+
+    def initialize_models_from_pretrained(
+        self,
+        path="/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp",
+        freeze_modules=[],
+    ):
+        self.clamp_config = ClampConfig.from_pretrained(path)
+        self.clamp_model = ClampModel.from_pretrained(path)
+        print("Freeze Text and Audio and Motion Encoder!!!!")
+
+        for n, p in self.clamp_model.named_parameters():
+            if n.split(".")[0] in freeze_modules or n in freeze_modules:
+                p.requires_grad = False
+
+        clamp_feature_extractor = ClampFeatureExtractor.from_pretrained(path)
+        clamp_feature_extractor.motion_max_length = (
+            self.training_args.motion_max_length_s * clamp_feature_extractor.fps
+        )
+        tokenizer = RobertaTokenizer.from_pretrained(path)
+        self.clamp_processor = ClampProcessor(clamp_feature_extractor, tokenizer)
+
+        total = sum(p.numel() for p in self.clamp_model.parameters() if p.requires_grad)
+        print("Total training params: %.2fM" % (total / 1e6))
 
     def print(self, msg):
         # self.accelerator.print(msg)

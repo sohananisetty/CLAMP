@@ -11,7 +11,7 @@ def separate_weight_decayable_params(params):
 
 def get_optimizer(
     named_params,
-    freeze_parameters,
+    freeze_modules=[],
     lr=1e-4,
     wd=1e-2,
     betas=(0.9, 0.99),
@@ -36,8 +36,9 @@ def get_optimizer(
 
     # if args.freeze_text:
     print("Freeze Text and Audio!!!!")
-    for k in freeze_parameters:
-        k.requires_grad = False
+    for n, p in named_parameters:
+        if n.split(".")[0] in freeze_modules:
+            p.requires_grad = False
 
     gain_or_bias_params = [
         p for n, p in named_parameters if exclude(n, p) and p.requires_grad

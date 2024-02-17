@@ -17,27 +17,29 @@ from processing_clamp import ClampProcessor
 dataset_names = [
     "animation",
     "humanml",
-    # "perform",
-    # "GRAB",
-    # "idea400",
-    # "humman",
-    # "beat",
-    # "game_motion",
-    # "music",
-    # "aist",
-    # "fitness",
-    # "moyo",
-    # "choreomaster",
-    # "dance",
-    # "kungfu",
-    # "EgoBody",
-    # "HAA500",
+    "perform",
+    "GRAB",
+    "idea400",
+    "humman",
+    "beat",
+    "game_motion",
+    "music",
+    "aist",
+    "fitness",
+    "moyo",
+    "choreomaster",
+    "dance",
+    "kungfu",
+    "EgoBody",
+    "HAA500",
 ]
 
 
 def load_dataset(
     dataset_root,
     dataset_names=dataset_names,
+    motion_min_length_s=2,
+    motion_max_length_s=10,
     split: str = "train",
     weight_scale: Optional[List[int]] = None,
     # dataset_class=CLAMPDataset,
@@ -53,6 +55,8 @@ def load_dataset(
                 dataset_name,
                 dataset_root=dataset_root,
                 split=split,
+                motion_min_length_s=motion_min_length_s,
+                motion_max_length_s=motion_max_length_s,
             )
         )
 
@@ -80,6 +84,8 @@ class CLAMPDataset(data.Dataset):
         self,
         dataset_name: str,
         dataset_root: str,
+        motion_min_length_s=2,
+        motion_max_length_s=10,
         fps: int = 30,
         split: str = "train",
     ):
@@ -88,8 +94,8 @@ class CLAMPDataset(data.Dataset):
         self.split = split
         self.fps = fps
 
-        self.min_motion_length = 60
-        self.max_motion_length = 300
+        self.min_motion_length = motion_min_length_s * fps
+        self.max_motion_length = motion_max_length_s * fps
 
         data_root = dataset_root
 
