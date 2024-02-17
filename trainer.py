@@ -29,6 +29,7 @@ from torch.utils.data import DataLoader
 from training_config import cfg, get_cfg_defaults
 
 from yacs.config import CfgNode
+from time import time
 
 
 def cycle(dl):
@@ -100,7 +101,7 @@ class ClampTrainer(nn.Module):
         train_ds, sampler_train, weights_train = load_dataset(
             dataset_root=self.dataset_args.dataset_root,
             split="train",
-            # weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
+            weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
             motion_min_length_s=self.training_args.motion_min_length_s,
             motion_max_length_s=self.training_args.motion_max_length_s,
         )
@@ -123,12 +124,16 @@ class ClampTrainer(nn.Module):
             sampler=sampler_train,
             shuffle=False if sampler_train else True,
             collate_fn=partial(simple_collate, clamp_processor=self.clamp_processor),
+            # pin_memory=False,
+            # num_workers=2,
         )
         self.valid_dl = DataLoader(
             test_ds,
             batch_size=self.training_args.eval_bs,
             shuffle=False,
             collate_fn=partial(simple_collate, clamp_processor=self.clamp_processor),
+            # pin_memory=False,
+            # num_workers=2,
         )
 
         self.dl_iter = cycle(self.dl)
@@ -150,7 +155,7 @@ class ClampTrainer(nn.Module):
         freeze_modules=[],
     ):
         self.clamp_config = ClampConfig.from_pretrained(path)
-        self.clamp_model = ClampModel.from_pretrained(path)
+        self.clamp_model = ClampModel.from_pretrained(path).to(self.device)
         print("Freeze Text and Audio and Motion Encoder!!!!")
 
         for n, p in self.clamp_model.named_parameters():
@@ -195,6 +200,15 @@ class ClampTrainer(nn.Module):
         self.steps = pkg["steps"]
         self.best_loss = pkg["total_loss"]
 
+    def to_device(self, batch):
+        for k in batch.keys():
+            try:
+                batch[k] = batch[k].to(self.device)
+            except:
+                continue
+
+        return batch
+
     def train_step(self):
         steps = int(self.steps.item())
 
@@ -206,6 +220,8 @@ class ClampTrainer(nn.Module):
 
         for _ in range(self.grad_accum_every):
             batch = next(self.dl_iter)
+
+            batch = self.to_device(batch)
 
             output = self.clamp_model(**batch, return_loss=True)
 
@@ -278,6 +294,7 @@ class ClampTrainer(nn.Module):
                 position=0,
                 leave=True,
             ):
+                batch = self.to_device(batch)
                 output = self.clamp_model(**batch, return_loss=True)
 
                 loss = output.loss
@@ -288,8 +305,8 @@ class ClampTrainer(nn.Module):
 
                 loss_dict = {
                     "total_loss": loss.detach().cpu(),
-                    "probs_tvm": torch.diag(probs_tvm.detach().cpu()),
-                    "probs_mvt": torch.diag(probs_mvt.detach().cpu()),
+                    "probs_tvm": torch.mean(torch.diag(probs_tvm.detach().cpu())),
+                    "probs_mvt": torch.mean(torch.diag(probs_mvt.detach().cpu())),
                 }
 
                 val_loss_ae.update(loss_dict)
@@ -305,12 +322,12 @@ class ClampTrainer(nn.Module):
             wandb.log({f"val_loss_vqgan/{key}": value})
 
         print(
-            f"val/total_loss ",
+            f"val/contrastive loss ",
             val_loss_ae["total_loss"],
         )
 
         print(
-            "val/rec_loss",
+            "val/probs_tvm",
             val_loss_ae["probs_tvm"],
         )
 
@@ -327,7 +344,12 @@ class ClampTrainer(nn.Module):
             self.load(save_path)
 
         while self.steps < self.num_train_steps:
+            start = time()
             logs = self.train_step()
+            end = time()
+
+            # if int(self.steps.item())
+            print(f"Finish with:{end - start} second, num_workers=4")
             # log_fn(logs)
 
         self.print("training complete")
