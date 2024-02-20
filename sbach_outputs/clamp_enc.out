@@ -1,0 +1,151 @@
+loading config from: /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_enc/clamp_enc.yaml
+output_dir:  /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints
+Freeze Text and Audio and Motion Encoder!!!!
+Total training params: 1.05M
+Freeze Text and Audio!!!!
+Total number of motions animation: 200 and texts 200
+Total number of motions humanml: 55794 and texts 55794
+Total number of motions perform: 371 and texts 371
+Total number of motions GRAB: 1268 and texts 1268
+Total number of motions idea400: 11070 and texts 11070
+Total number of motions humman: 405 and texts 405
+Total number of motions game_motion: 4012 and texts 4012
+Total number of motions music: 3005 and texts 3005
+Total number of motions aist: 1149 and texts 1149
+Total number of motions fitness: 12681 and texts 12681
+Total number of motions moyo: 161 and texts 161
+Total number of motions choreomaster: 34 and texts 34
+Total number of motions dance: 101 and texts 101
+Total number of motions kungfu: 860 and texts 860
+Total number of motions EgoBody: 913 and texts 913
+Total number of motions HAA500: 711 and texts 711
+Total number of motions animation: 9 and texts 9
+Total number of motions humanml: 9888 and texts 9888
+Total number of motions perform: 17 and texts 17
+Total number of motions GRAB: 67 and texts 67
+Total number of motions idea400: 574 and texts 574
+Total number of motions humman: 24 and texts 24
+Total number of motions game_motion: 203 and texts 203
+Total number of motions music: 153 and texts 153
+Total number of motions aist: 61 and texts 61
+Total number of motions fitness: 656 and texts 656
+Total number of motions moyo: 9 and texts 9
+Total number of motions choreomaster: 2 and texts 2
+Total number of motions dance: 7 and texts 7
+Total number of motions kungfu: 45 and texts 45
+Total number of motions EgoBody: 49 and texts 49
+Total number of motions HAA500: 37 and texts 37
+training with training 92735 and test dataset of and 11801 samples
+/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints
+0: model total contrastive loss: 7.05
+validation start
+val/contrastive loss  tensor(6.8105)
+val/probs_tvm tensor(0.0013)
+7.049394607543945 inf
+0: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/checkpoints
+200: model total contrastive loss: 5.87
+400: model total contrastive loss: 5.23
+600: model total contrastive loss: 4.81
+800: model total contrastive loss: 4.57
+1000: model total contrastive loss: 4.25
+1200: model total contrastive loss: 4.1
+1400: model total contrastive loss: 3.9
+1600: model total contrastive loss: 3.76
+1800: model total contrastive loss: 3.53
+2000: model total contrastive loss: 3.53
+2200: model total contrastive loss: 3.48
+2400: model total contrastive loss: 3.36
+2600: model total contrastive loss: 3.37
+2800: model total contrastive loss: 3.26
+3000: model total contrastive loss: 3.27
+3200: model total contrastive loss: 3.18
+3400: model total contrastive loss: 3.02
+3600: model total contrastive loss: 2.98
+3800: model total contrastive loss: 2.9
+4000: model total contrastive loss: 2.96
+4200: model total contrastive loss: 2.92
+4400: model total contrastive loss: 2.97
+4600: model total contrastive loss: 2.8
+4800: model total contrastive loss: 2.75
+5000: model total contrastive loss: 2.79
+5200: model total contrastive loss: 2.81
+5400: model total contrastive loss: 2.75
+5600: model total contrastive loss: 2.84
+5800: model total contrastive loss: 2.71
+6000: model total contrastive loss: 2.69
+6200: model total contrastive loss: 2.82
+6400: model total contrastive loss: 2.7
+6600: model total contrastive loss: 2.71
+6800: model total contrastive loss: 2.7
+7000: model total contrastive loss: 2.66
+7200: model total contrastive loss: 2.73
+7400: model total contrastive loss: 2.7
+7600: model total contrastive loss: 2.58
+7800: model total contrastive loss: 2.72
+8000: model total contrastive loss: 2.68
+8200: model total contrastive loss: 2.58
+8400: model total contrastive loss: 2.59
+8600: model total contrastive loss: 2.55
+8800: model total contrastive loss: 2.44
+9000: model total contrastive loss: 2.61
+9200: model total contrastive loss: 2.54
+9400: model total contrastive loss: 2.59
+9600: model total contrastive loss: 2.55
+9800: model total contrastive loss: 2.48
+10000: model total contrastive loss: 2.5
+validation start
+val/contrastive loss  tensor(6.1886)
+val/probs_tvm tensor(0.0114)
+2.5043153762817383 tensor(7.0494)
+10000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/checkpoints
+10200: model total contrastive loss: 2.45
+10400: model total contrastive loss: 2.59
+10600: model total contrastive loss: 2.48
+10800: model total contrastive loss: 2.4
+11000: model total contrastive loss: 2.64
+11200: model total contrastive loss: 2.5
+11400: model total contrastive loss: 2.51
+11600: model total contrastive loss: 2.51
+11800: model total contrastive loss: 2.42
+12000: model total contrastive loss: 2.37
+12200: model total contrastive loss: 2.48
+12400: model total contrastive loss: 2.37
+12600: model total contrastive loss: 2.43
+12800: model total contrastive loss: 2.39
+13000: model total contrastive loss: 2.45
+13200: model total contrastive loss: 2.43
+13400: model total contrastive loss: 2.35
+13600: model total contrastive loss: 2.41
+13800: model total contrastive loss: 2.44
+14000: model total contrastive loss: 2.45
+14200: model total contrastive loss: 2.37
+14400: model total contrastive loss: 2.38
+14600: model total contrastive loss: 2.09
+14800: model total contrastive loss: 2.38
+15000: model total contrastive loss: 2.3
+15200: model total contrastive loss: 2.37
+15400: model total contrastive loss: 2.34
+15600: model total contrastive loss: 2.34
+15800: model total contrastive loss: 2.33
+16000: model total contrastive loss: 2.37
+16200: model total contrastive loss: 2.34
+16400: model total contrastive loss: 2.36
+16600: model total contrastive loss: 2.36
+16800: model total contrastive loss: 2.32
+17000: model total contrastive loss: 2.33
+17200: model total contrastive loss: 2.38
+17400: model total contrastive loss: 2.21
+17600: model total contrastive loss: 2.33
+17800: model total contrastive loss: 2.35
+18000: model total contrastive loss: 2.29
+18200: model total contrastive loss: 2.2
+18400: model total contrastive loss: 2.32
+18600: model total contrastive loss: 2.4
+18800: model total contrastive loss: 2.19
+19000: model total contrastive loss: 2.35
+19200: model total contrastive loss: 2.19
+19400: model total contrastive loss: 2.3
+19600: model total contrastive loss: 2.33
+19800: model total contrastive loss: 2.35
+20000: model total contrastive loss: 2.31
+validation start

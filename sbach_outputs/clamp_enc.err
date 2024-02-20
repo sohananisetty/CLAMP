@@ -1,0 +1,19 @@
+Some weights of ClampModel were not initialized from the model checkpoint at /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/clamp and are newly initialized: ['motion_projection.project_in.weight', 'motion_projection.project_in.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/coc/flash5/sanisetty3/miniconda3/envs/tgm3d/lib/python3.9/site-packages/transformers/audio_utils.py:591: FutureWarning: The function `get_mel_filter_banks` is deprecated and will be removed in version 4.31.0 of Transformers
+  warnings.warn(
+wandb: Currently logged in as: sohananisetty (ai-choreo). Use `wandb login --relogin` to force relogin
+wandb: wandb version 0.16.3 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Tracking run with wandb version 0.16.2
+wandb: Run data is saved locally in /coc/scratch/sanisetty3/music_motion/clamp/wandb/run-20240217_122815-06lbbr5p
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run scintillating-dragon-1
+wandb:  View project at https://wandb.ai/ai-choreo/clamp_enc
+wandb:  View run at https://wandb.ai/ai-choreo/clamp_enc/runs/06lbbr5p
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|8         | 1/12 [00:02<00:22,  2.03s/it] 17%|#6        | 2/12 [00:04<00:20,  2.08s/it] 25%|##5       | 3/12 [00:06<00:18,  2.08s/it] 33%|###3      | 4/12 [00:08<00:17,  2.15s/it] 42%|####1     | 5/12 [00:10<00:15,  2.19s/it] 50%|#####     | 6/12 [00:12<00:13,  2.21s/it] 58%|#####8    | 7/12 [00:15<00:10,  2.20s/it] 67%|######6   | 8/12 [00:17<00:08,  2.23s/it] 75%|#######5  | 9/12 [00:19<00:06,  2.19s/it] 83%|########3 | 10/12 [00:21<00:04,  2.20s/it] 92%|#########1| 11/12 [00:23<00:02,  2.12s/it]100%|##########| 12/12 [00:25<00:00,  2.05s/it]100%|##########| 12/12 [00:25<00:00,  2.13s/it]
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|8         | 1/12 [00:02<00:22,  2.02s/it] 17%|#6        | 2/12 [00:04<00:20,  2.07s/it] 25%|##5       | 3/12 [00:06<00:18,  2.05s/it] 33%|###3      | 4/12 [00:08<00:16,  2.08s/it] 42%|####1     | 5/12 [00:10<00:14,  2.12s/it] 50%|#####     | 6/12 [00:12<00:12,  2.12s/it] 58%|#####8    | 7/12 [00:14<00:10,  2.10s/it] 67%|######6   | 8/12 [00:16<00:08,  2.17s/it] 75%|#######5  | 9/12 [00:19<00:06,  2.16s/it] 83%|########3 | 10/12 [00:21<00:04,  2.17s/it] 92%|#########1| 11/12 [00:23<00:02,  2.15s/it]100%|##########| 12/12 [00:25<00:00,  2.10s/it]100%|##########| 12/12 [00:25<00:00,  2.12s/it]
+  0%|          | 0/12 [00:00<?, ?it/s]  8%|8         | 1/12 [00:02<00:24,  2.19s/it] 17%|#6        | 2/12 [00:04<00:22,  2.23s/it] 25%|##5       | 3/12 [00:06<00:19,  2.19s/it] 33%|###3      | 4/12 [00:08<00:17,  2.22s/it] 42%|####1     | 5/12 [00:11<00:16,  2.29s/it] 50%|#####     | 6/12 [00:13<00:13,  2.23s/it] 58%|#####8    | 7/12 [00:15<00:10,  2.17s/it] 67%|######6   | 8/12 [00:17<00:08,  2.17s/it] 75%|#######5  | 9/12 [00:19<00:06,  2.11s/it] 83%|########3 | 10/12 [00:21<00:04,  2.10s/it] 92%|#########1| 11/12 [00:23<00:02,  2.10s/it]100%|##########| 12/12 [00:25<00:00,  2.07s/it]100%|##########| 12/12 [00:25<00:00,  2.14s/it]
+srun: Job step aborted: Waiting up to 302 seconds for job step to finish.
+slurmstepd: error: *** STEP 795138.0 ON brainiac CANCELLED AT 2024-02-18T10:44:06 ***
+slurmstepd: error: *** JOB 795138 ON brainiac CANCELLED AT 2024-02-18T10:44:06 ***

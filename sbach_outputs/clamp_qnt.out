@@ -1,0 +1,198 @@
+loading config from: /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/clamp_qnt.yaml
+output_dir:  /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt
+Freeze Text and Audio and Motion Encoder!!!!
+Total training params: 1.05M
+Freeze Text and Audio!!!!
+Total number of motions animation: 200 and texts 200
+Total number of motions humanml: 55794 and texts 55794
+Total number of motions perform: 371 and texts 371
+Total number of motions GRAB: 1268 and texts 1268
+Total number of motions idea400: 11070 and texts 11070
+Total number of motions humman: 405 and texts 405
+Total number of motions game_motion: 4012 and texts 4012
+Total number of motions music: 3005 and texts 3005
+Total number of motions aist: 1149 and texts 1149
+Total number of motions fitness: 12681 and texts 12681
+Total number of motions moyo: 161 and texts 161
+Total number of motions choreomaster: 34 and texts 34
+Total number of motions dance: 101 and texts 101
+Total number of motions kungfu: 860 and texts 860
+Total number of motions EgoBody: 913 and texts 913
+Total number of motions HAA500: 711 and texts 711
+Total number of motions animation: 9 and texts 9
+Total number of motions humanml: 9888 and texts 9888
+Total number of motions perform: 17 and texts 17
+Total number of motions GRAB: 67 and texts 67
+Total number of motions idea400: 574 and texts 574
+Total number of motions humman: 24 and texts 24
+Total number of motions game_motion: 203 and texts 203
+Total number of motions music: 153 and texts 153
+Total number of motions aist: 61 and texts 61
+Total number of motions fitness: 656 and texts 656
+Total number of motions moyo: 9 and texts 9
+Total number of motions choreomaster: 2 and texts 2
+Total number of motions dance: 7 and texts 7
+Total number of motions kungfu: 45 and texts 45
+Total number of motions EgoBody: 49 and texts 49
+Total number of motions HAA500: 37 and texts 37
+training with training 92735 and test dataset of and 11801 samples
+/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt
+resuming from  /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/clamp_motion.pt
+8000: model total contrastive loss: 2.37 probs_tvm: 0.124 probs_mvt: 0.307
+validation start
+val/contrastive loss  tensor(4.9121)
+val/probs_tvm tensor(0.0330)
+8200: model total contrastive loss: 2.34 probs_tvm: 0.141 probs_mvt: 0.32
+8400: model total contrastive loss: 2.25 probs_tvm: 0.152 probs_mvt: 0.331
+8600: model total contrastive loss: 2.3 probs_tvm: 0.13 probs_mvt: 0.305
+8800: model total contrastive loss: 2.24 probs_tvm: 0.143 probs_mvt: 0.335
+9000: model total contrastive loss: 2.28 probs_tvm: 0.139 probs_mvt: 0.329
+9200: model total contrastive loss: 2.39 probs_tvm: 0.142 probs_mvt: 0.339
+9400: model total contrastive loss: 2.33 probs_tvm: 0.142 probs_mvt: 0.335
+9600: model total contrastive loss: 2.33 probs_tvm: 0.143 probs_mvt: 0.344
+9800: model total contrastive loss: 2.35 probs_tvm: 0.134 probs_mvt: 0.321
+10000: model total contrastive loss: 2.23 probs_tvm: 0.15 probs_mvt: 0.343
+validation start
+val/contrastive loss  tensor(4.9241)
+val/probs_tvm tensor(0.0370)
+2.2265872955322266 tensor(2.8885, device='cuda:0')
+10000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/checkpoints
+10200: model total contrastive loss: 2.24 probs_tvm: 0.135 probs_mvt: 0.327
+10400: model total contrastive loss: 2.35 probs_tvm: 0.133 probs_mvt: 0.329
+10600: model total contrastive loss: 2.37 probs_tvm: 0.129 probs_mvt: 0.313
+10800: model total contrastive loss: 2.25 probs_tvm: 0.136 probs_mvt: 0.337
+11000: model total contrastive loss: 2.36 probs_tvm: 0.137 probs_mvt: 0.333
+11200: model total contrastive loss: 2.4 probs_tvm: 0.133 probs_mvt: 0.325
+11400: model total contrastive loss: 2.27 probs_tvm: 0.135 probs_mvt: 0.337
+11600: model total contrastive loss: 2.28 probs_tvm: 0.139 probs_mvt: 0.34
+11800: model total contrastive loss: 2.28 probs_tvm: 0.134 probs_mvt: 0.332
+12000: model total contrastive loss: 2.39 probs_tvm: 0.131 probs_mvt: 0.309
+validation start
+val/contrastive loss  tensor(4.9755)
+val/probs_tvm tensor(0.0358)
+12200: model total contrastive loss: 2.47 probs_tvm: 0.128 probs_mvt: 0.313
+12400: model total contrastive loss: 2.41 probs_tvm: 0.134 probs_mvt: 0.331
+12600: model total contrastive loss: 2.31 probs_tvm: 0.136 probs_mvt: 0.329
+12800: model total contrastive loss: 2.42 probs_tvm: 0.138 probs_mvt: 0.319
+13000: model total contrastive loss: 2.38 probs_tvm: 0.134 probs_mvt: 0.317
+13200: model total contrastive loss: 2.59 probs_tvm: 0.119 probs_mvt: 0.297
+13400: model total contrastive loss: 2.4 probs_tvm: 0.124 probs_mvt: 0.315
+13600: model total contrastive loss: 2.51 probs_tvm: 0.121 probs_mvt: 0.303
+13800: model total contrastive loss: 2.29 probs_tvm: 0.127 probs_mvt: 0.32
+14000: model total contrastive loss: 2.53 probs_tvm: 0.121 probs_mvt: 0.291
+validation start
+val/contrastive loss  tensor(4.9655)
+val/probs_tvm tensor(0.0369)
+14200: model total contrastive loss: 2.42 probs_tvm: 0.127 probs_mvt: 0.308
+14400: model total contrastive loss: 2.47 probs_tvm: 0.119 probs_mvt: 0.311
+14600: model total contrastive loss: 2.39 probs_tvm: 0.134 probs_mvt: 0.319
+14800: model total contrastive loss: 2.26 probs_tvm: 0.138 probs_mvt: 0.324
+15000: model total contrastive loss: 2.54 probs_tvm: 0.117 probs_mvt: 0.288
+2.535700559616089 tensor(2.2266)
+15000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/checkpoints
+15200: model total contrastive loss: 2.37 probs_tvm: 0.138 probs_mvt: 0.316
+15400: model total contrastive loss: 2.38 probs_tvm: 0.129 probs_mvt: 0.328
+15600: model total contrastive loss: 2.35 probs_tvm: 0.136 probs_mvt: 0.319
+15800: model total contrastive loss: 2.31 probs_tvm: 0.131 probs_mvt: 0.323
+16000: model total contrastive loss: 2.26 probs_tvm: 0.146 probs_mvt: 0.36
+validation start
+val/contrastive loss  tensor(5.0311)
+val/probs_tvm tensor(0.0325)
+16200: model total contrastive loss: 2.3 probs_tvm: 0.136 probs_mvt: 0.324
+16400: model total contrastive loss: 2.3 probs_tvm: 0.137 probs_mvt: 0.326
+16600: model total contrastive loss: 2.4 probs_tvm: 0.131 probs_mvt: 0.316
+16800: model total contrastive loss: 2.23 probs_tvm: 0.142 probs_mvt: 0.35
+17000: model total contrastive loss: 2.27 probs_tvm: 0.143 probs_mvt: 0.36
+17200: model total contrastive loss: 2.24 probs_tvm: 0.148 probs_mvt: 0.358
+17400: model total contrastive loss: 2.2 probs_tvm: 0.145 probs_mvt: 0.357
+17600: model total contrastive loss: 2.31 probs_tvm: 0.135 probs_mvt: 0.327
+17800: model total contrastive loss: 2.14 probs_tvm: 0.155 probs_mvt: 0.372
+18000: model total contrastive loss: 2.28 probs_tvm: 0.133 probs_mvt: 0.334
+validation start
+val/contrastive loss  tensor(4.9422)
+val/probs_tvm tensor(0.0333)
+18200: model total contrastive loss: 2.23 probs_tvm: 0.152 probs_mvt: 0.361
+18400: model total contrastive loss: 2.23 probs_tvm: 0.142 probs_mvt: 0.351
+18600: model total contrastive loss: 2.18 probs_tvm: 0.135 probs_mvt: 0.352
+18800: model total contrastive loss: 2.25 probs_tvm: 0.152 probs_mvt: 0.359
+19000: model total contrastive loss: 2.16 probs_tvm: 0.147 probs_mvt: 0.357
+19200: model total contrastive loss: 2.14 probs_tvm: 0.149 probs_mvt: 0.358
+19400: model total contrastive loss: 2.24 probs_tvm: 0.153 probs_mvt: 0.36
+19600: model total contrastive loss: 2.21 probs_tvm: 0.15 probs_mvt: 0.351
+19800: model total contrastive loss: 2.17 probs_tvm: 0.152 probs_mvt: 0.362
+20000: model total contrastive loss: 2.11 probs_tvm: 0.153 probs_mvt: 0.357
+validation start
+val/contrastive loss  tensor(4.8899)
+val/probs_tvm tensor(0.0348)
+2.1077728271484375 tensor(2.2266)
+20000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/checkpoints
+20200: model total contrastive loss: 2.3 probs_tvm: 0.139 probs_mvt: 0.339
+20400: model total contrastive loss: 2.32 probs_tvm: 0.14 probs_mvt: 0.347
+20600: model total contrastive loss: 2.14 probs_tvm: 0.151 probs_mvt: 0.379
+20800: model total contrastive loss: 2.17 probs_tvm: 0.152 probs_mvt: 0.383
+21000: model total contrastive loss: 2.19 probs_tvm: 0.153 probs_mvt: 0.374
+21200: model total contrastive loss: 2.15 probs_tvm: 0.159 probs_mvt: 0.378
+21400: model total contrastive loss: 2.24 probs_tvm: 0.146 probs_mvt: 0.343
+21600: model total contrastive loss: 2.26 probs_tvm: 0.145 probs_mvt: 0.36
+21800: model total contrastive loss: 2.12 probs_tvm: 0.16 probs_mvt: 0.387
+22000: model total contrastive loss: 2.29 probs_tvm: 0.137 probs_mvt: 0.338
+validation start
+val/contrastive loss  tensor(5.0073)
+val/probs_tvm tensor(0.0358)
+22200: model total contrastive loss: 2.12 probs_tvm: 0.151 probs_mvt: 0.37
+22400: model total contrastive loss: 2.27 probs_tvm: 0.152 probs_mvt: 0.354
+22600: model total contrastive loss: 2.05 probs_tvm: 0.169 probs_mvt: 0.401
+22800: model total contrastive loss: 2.21 probs_tvm: 0.153 probs_mvt: 0.363
+23000: model total contrastive loss: 2.25 probs_tvm: 0.147 probs_mvt: 0.351
+23200: model total contrastive loss: 2.27 probs_tvm: 0.152 probs_mvt: 0.376
+23400: model total contrastive loss: 2.16 probs_tvm: 0.157 probs_mvt: 0.378
+23600: model total contrastive loss: 2.27 probs_tvm: 0.147 probs_mvt: 0.343
+23800: model total contrastive loss: 2.2 probs_tvm: 0.154 probs_mvt: 0.368
+24000: model total contrastive loss: 2.17 probs_tvm: 0.154 probs_mvt: 0.381
+validation start
+val/contrastive loss  tensor(4.9512)
+val/probs_tvm tensor(0.0365)
+24200: model total contrastive loss: 2.27 probs_tvm: 0.151 probs_mvt: 0.363
+24400: model total contrastive loss: 2.07 probs_tvm: 0.161 probs_mvt: 0.377
+24600: model total contrastive loss: 2.19 probs_tvm: 0.15 probs_mvt: 0.355
+24800: model total contrastive loss: 2.17 probs_tvm: 0.153 probs_mvt: 0.379
+25000: model total contrastive loss: 2.13 probs_tvm: 0.156 probs_mvt: 0.376
+2.1287841796875 tensor(2.1078)
+25000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/checkpoints
+25200: model total contrastive loss: 2.05 probs_tvm: 0.163 probs_mvt: 0.382
+25400: model total contrastive loss: 2.03 probs_tvm: 0.172 probs_mvt: 0.403
+25600: model total contrastive loss: 2.01 probs_tvm: 0.164 probs_mvt: 0.385
+25800: model total contrastive loss: 2.14 probs_tvm: 0.156 probs_mvt: 0.38
+26000: model total contrastive loss: 2.17 probs_tvm: 0.149 probs_mvt: 0.366
+validation start
+val/contrastive loss  tensor(5.0148)
+val/probs_tvm tensor(0.0370)
+26200: model total contrastive loss: 2.16 probs_tvm: 0.163 probs_mvt: 0.383
+26400: model total contrastive loss: 2.17 probs_tvm: 0.157 probs_mvt: 0.389
+26600: model total contrastive loss: 2.13 probs_tvm: 0.16 probs_mvt: 0.378
+26800: model total contrastive loss: 2.13 probs_tvm: 0.161 probs_mvt: 0.376
+27000: model total contrastive loss: 2.2 probs_tvm: 0.157 probs_mvt: 0.371
+27200: model total contrastive loss: 2.07 probs_tvm: 0.159 probs_mvt: 0.387
+27400: model total contrastive loss: 2.16 probs_tvm: 0.157 probs_mvt: 0.385
+27600: model total contrastive loss: 1.9 probs_tvm: 0.159 probs_mvt: 0.388
+27800: model total contrastive loss: 2.02 probs_tvm: 0.163 probs_mvt: 0.406
+28000: model total contrastive loss: 1.98 probs_tvm: 0.175 probs_mvt: 0.415
+validation start
+val/contrastive loss  tensor(4.9794)
+val/probs_tvm tensor(0.0396)
+28200: model total contrastive loss: 1.96 probs_tvm: 0.166 probs_mvt: 0.392
+28400: model total contrastive loss: 1.97 probs_tvm: 0.173 probs_mvt: 0.406
+28600: model total contrastive loss: 2.09 probs_tvm: 0.16 probs_mvt: 0.375
+28800: model total contrastive loss: 2.01 probs_tvm: 0.175 probs_mvt: 0.402
+29000: model total contrastive loss: 2.06 probs_tvm: 0.167 probs_mvt: 0.395
+29200: model total contrastive loss: 1.97 probs_tvm: 0.171 probs_mvt: 0.407
+29400: model total contrastive loss: 2.18 probs_tvm: 0.149 probs_mvt: 0.362
+29600: model total contrastive loss: 1.82 probs_tvm: 0.19 probs_mvt: 0.437
+29800: model total contrastive loss: 2.11 probs_tvm: 0.166 probs_mvt: 0.39
+30000: model total contrastive loss: 2.14 probs_tvm: 0.163 probs_mvt: 0.391
+validation start
+val/contrastive loss  tensor(5.0146)
+val/probs_tvm tensor(0.0392)
+2.1366426944732666 tensor(2.1078)
+30000: saving model to /srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/clamp_qnt/checkpoints
+training complete

@@ -230,7 +230,12 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
         return mel_fusion
 
     def _get_input_mel(
-        self, waveform: np.array, max_length, truncation, padding
+        self,
+        waveform: np.array,
+        max_length,
+        truncation,
+        padding,
+        subset_index=None,
     ) -> np.array:
         """
         Extracts the mel spectrogram and prepares it for the mode based on the `truncation` and `padding` arguments.
@@ -251,11 +256,16 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
                 longer = True
                 # random crop to max_length (for compatibility) -> this should be handled by self.pad
                 overflow = len(waveform) - max_length
-                idx = np.random.randint(0, overflow + 1)
+                idx = (
+                    subset_index
+                    if subset_index is not None
+                    else np.random.randint(0, overflow + 1)
+                )
                 waveform = waveform[idx : idx + max_length]
                 input_mel = self._np_extract_fbank_features(
                     waveform, self.mel_filters_slaney
                 )[None, :]
+
             elif truncation == "fusion":
                 mel = self._np_extract_fbank_features(waveform, self.mel_filters)
                 chunk_frames = (
@@ -406,6 +416,7 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
         down_sampling_factor=4,
         truncation="rand_trunc",
         padding="longest",
+        subset_index=None,
     ):
         motions = []
         masks = []
@@ -431,7 +442,11 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
                 # if truncation == "rand_trunc":
                 # random crop to max_length (for compatibility) -> this should be handled by self.pad
                 overflow = seq_len - max_length
-                idx = np.random.randint(0, overflow + 1)
+                idx = (
+                    subset_index
+                    if subset_index is not None
+                    else np.random.randint(0, overflow + 1)
+                )
                 motion = motion[idx : idx + max_length]
                 mask = np.array([1] * max_length)
                 motions.append(motion[None, ...])
@@ -516,6 +531,31 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
         padding = padding if padding else self.padding
         motion_padding = motion_padding if motion_padding else self.motion_padding
 
+        max_length = max_length if max_length is not None else self.nb_max_samples
+        max_motion_length = (
+            max_motion_length
+            if max_motion_length is not None
+            else self.motion_max_length
+        )
+
+        subset_idx_motion, subset_idx_audio = None, None
+
+        if raw_motion is not None and raw_speech is not None:
+            common_seconds = min(
+                raw_motion.shape[0] // self.fps,
+                raw_speech.shape[0] // self.sampling_rate,
+            )
+            raw_motion = raw_motion[: int(common_seconds * self.fps)]
+            raw_speech = raw_speech[: int(common_seconds * self.sampling_rate)]
+
+            if common_seconds > max_length // self.sampling_rate:
+                subset_idx_motion = np.random.randint(
+                    0, raw_motion.shape[0] - max_motion_length + 1
+                )
+                subset_idx_audio = np.random.randint(
+                    0, raw_speech.shape[0] - max_length + 1
+                )
+
         input_features = {}
 
         if raw_speech is not None:
@@ -557,15 +597,20 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
                 raw_speech = [np.asarray(raw_speech)]
 
             # convert to mel spectrogram, truncate and pad if needed.
-            padded_inputs = [
-                self._get_input_mel(
-                    waveform,
-                    max_length if max_length else self.nb_max_samples,
-                    truncation,
-                    padding,
+            padded_inputs = []
+            for waveform in raw_speech:
+                if waveform is None:
+                    padded_inputs.append((np.zeros(1, max_length, 64), False))
+
+                padded_inputs.append(
+                    self._get_input_mel(
+                        waveform,
+                        max_length,
+                        truncation,
+                        padding,
+                        subset_index=subset_idx_audio,
+                    )
                 )
-                for waveform in raw_speech
-            ]
 
             input_mel = []
             is_longer = []
@@ -586,7 +631,7 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
             # is_longer is a list of bool
             is_longer = [[longer] for longer in is_longer]
 
-            input_features["input_features"] = input_mel
+            input_features["input_features"] = np.concatenate(input_mel, 0)
             input_features["is_longer"] = is_longer
 
             # = {"input_features": input_mel, "is_longer": is_longer}
@@ -608,11 +653,10 @@ class ClampFeatureExtractor(SequenceFeatureExtractor):
                 raw_motion = [np.asarray(raw_motion)]
 
             padded_motion, attention_mask = self._get_motion_padded(
-                max_length=(
-                    max_motion_length if max_motion_length else self.motion_max_length
-                ),
+                max_length=max_motion_length,
                 motion_list=raw_motion,
                 padding=motion_padding,
+                subset_index=subset_idx_motion,
             )
 
             input_features["input_motion_features"] = padded_motion

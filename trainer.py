@@ -101,7 +101,7 @@ class ClampTrainer(nn.Module):
         train_ds, sampler_train, weights_train = load_dataset(
             dataset_root=self.dataset_args.dataset_root,
             split="train",
-            weight_scale=[1, 2, 0.8, 1, 1, 1, 1, 0.5, 1, 2, 1, 2, 2, 1, 1, 1, 1],
+            weight_scale=[0.8, 3, 0.8, 1, 1.5, 0.5, 0.5, 1, 1, 1, 1.5, 2, 1, 1, 1, 1],
             motion_min_length_s=self.training_args.motion_min_length_s,
             motion_max_length_s=self.training_args.motion_max_length_s,
         )
@@ -226,10 +226,10 @@ class ClampTrainer(nn.Module):
             output = self.clamp_model(**batch, return_loss=True)
 
             loss = output.loss / self.grad_accum_every
-            # logits_per_text_vs_motion = output.logits_per_text_vs_motion
-            # probs_tvm = logits_per_text_vs_motion.softmax(dim=-1)
-            # logits_per_motion_vs_text = output.logits_per_motion_vs_text
-            # probs_mvt = logits_per_motion_vs_text.softmax(dim=-1)
+            logits_per_text_vs_motion = output.logits_per_text_vs_motion
+            probs_tvm = logits_per_text_vs_motion.softmax(dim=-1)
+            logits_per_motion_vs_text = output.logits_per_motion_vs_text
+            probs_mvt = logits_per_motion_vs_text.softmax(dim=-1)
 
             loss.backward()
 
@@ -237,8 +237,8 @@ class ClampTrainer(nn.Module):
                 logs,
                 dict(
                     loss=loss.detach().cpu(),
-                    # probs_tvm=probs_tvm.detach().cpu(),
-                    # probs_mvt=probs_mvt.detach().cpu(),
+                    probs_tvm=torch.mean(torch.diag(probs_tvm.detach().cpu())),
+                    probs_mvt=torch.mean(torch.diag(probs_mvt.detach().cpu())),
                 ),
             )
 
@@ -248,7 +248,7 @@ class ClampTrainer(nn.Module):
 
         # build pretty printed losses
 
-        losses_str = f"{steps}: model total contrastive loss: {logs['loss'].float():.3}"
+        losses_str = f"{steps}: model total contrastive loss: {logs['loss'].float():.3} probs_tvm: {logs['probs_tvm'].float():.3} probs_mvt: {logs['probs_mvt'].float():.3}"
 
         # log
         if steps % self.wandb_every == 0:
@@ -319,7 +319,7 @@ class ClampTrainer(nn.Module):
                 val_loss_ae.update(means_ae)
 
         for key, value in val_loss_ae.items():
-            wandb.log({f"val_loss_vqgan/{key}": value})
+            wandb.log({f"val_loss/{key}": value})
 
         print(
             f"val/contrastive loss ",
@@ -344,19 +344,13 @@ class ClampTrainer(nn.Module):
             self.load(save_path)
 
         while self.steps < self.num_train_steps:
-            start = time()
             logs = self.train_step()
-            end = time()
-
-            # if int(self.steps.item())
-            print(f"Finish with:{end - start} second, num_workers=4")
-            # log_fn(logs)
 
         self.print("training complete")
 
 
 if __name__ == "__main__":
-    nme = "clamp_enc"
+    nme = "clamp_qnt"
     path = f"/srv/hays-lab/scratch/sanisetty3/music_motion/clamp/checkpoints/{nme}/{nme}.yaml"
     cfg = get_cfg_defaults()
     print("loading config from:", path)

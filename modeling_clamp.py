@@ -710,7 +710,7 @@ class ClampMotionModel(ClapPreTrainedModel):
         quantized_features = self.postprocess(quantized_features)
 
         pooled_output = (
-            self.pooler(encoded_features) if self.pooler is not None else None
+            self.pooler(quantized_features) if self.pooler is not None else None
         )
 
         if not return_dict:
