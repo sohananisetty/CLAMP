@@ -15,7 +15,7 @@ import itertools
 from processing_clamp import ClampProcessor
 import json
 import torchaudio
-
+import librosa
 
 genre_dict = {
     "mBR": "Break",
@@ -118,6 +118,7 @@ class CLAMPDataset(data.Dataset):
         self,
         dataset_name: str,
         dataset_root: str,
+        audio_rep: str = "encodec",
         motion_min_length_s=2,
         motion_max_length_s=10,
         sampling_rate: int = 48000,
@@ -211,6 +212,12 @@ class CLAMPDataset(data.Dataset):
 
     def load_beat(self, name):
         name = name.split(".")[0]
+        id, person_name, recording_type, start, end = name.split("_")
+        if id in (list(np.arange(6, 11)) + list(np.arange(21, 31))):
+            gender = "woman"
+        else:
+            gender = "man"
+
         new_name = f"{name}_0_0"
         name_list = []
         txt_list = []
@@ -222,7 +229,19 @@ class CLAMPDataset(data.Dataset):
         ) as outfile:
             frame_texts = json.load(outfile)
 
+        emotion = frame_texts.pop("emotion")
+        if emotion == "neutral":
+            emotion = "a neutral tone"
+
+        prefix = (
+            f"a {gender} is giving a speech with {emotion} on "
+            if recording_type == 0
+            else f"a {gender} is having a conversation with {emotion} on "
+        )
+
         items = list(frame_texts.values())
+
+        items.insert(0, prefix)
         # sentence = (" ".join(list(dict.fromkeys(items)))).strip()
         name_list.append(new_name)
         txt_list.append(" ".join(items))
@@ -250,19 +269,20 @@ class CLAMPDataset(data.Dataset):
         text = self.text_list[item]
         try:
             wav, sr = torchaudio.load(os.path.join(self.audio_dir, name + ".wav"))
-            audio_data = convert_audio(wav, sr, self.sampling_rate, 1)
+            audio_data = np.squeeze(
+                np.array(convert_audio(wav, sr, self.sampling_rate, 1))
+            )
 
-            # audio_data, _ = librosa.load(
-            #     os.path.join(self.audio_dir, name + ".wav"),
-            #     sr=48000,
-            # )
         except:
             audio_data = None
+
         if to_ - f_ > self.min_motion_length:
             motion = motion[f_:to_]
             text = text[f_:to_]
 
-        text = (" ".join(list(dict.fromkeys(text.split(" "))))).strip()
+        if "beat" in name:
+
+            text = (" ".join(list(dict.fromkeys(text.split(" "))))).strip()
 
         return {
             "name": name,
@@ -286,15 +306,12 @@ def simple_collate(
         texts.append(sample["text"])
         audios.append(sample["audio"])
 
-    # if any(elem is None for elem in audios):
-    #     audios = None
-    # if None in texts:
-    #     texts = None
-    # if any(elem is None for elem in motions):
-    #     motions = None
-
     inputs = clamp_processor(
-        text=texts, audios=audios, motions=motions, return_tensors="pt", padding=True
+        text=texts,
+        audios=audios,
+        motions=motions,
+        return_tensors="pt",
+        padding=True,
     )
     inputs["names"] = np.array(names)
     inputs["texts"] = np.array(texts)
